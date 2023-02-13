@@ -1,4 +1,5 @@
 import products from "../../products";
+import { headers } from "../../constants";
 
 export const main = async (event) => {
     try {
@@ -10,11 +11,13 @@ export const main = async (event) => {
 
       return {
         statusCode,
+        headers,
         body,
       };
     } catch(e) {
       return {
         statusCode: 500,
+        headers,
         body: `The server couldn't process this request: ${e}`,
       };
     }
