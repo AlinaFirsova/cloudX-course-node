@@ -43,7 +43,7 @@ const client = new Client({
   } catch (e) {
     console.error(
       `ERROR: Can't connect to the DB ${PRODUCTS_DB_HOST}`,
-      e.stack
+      e.message
     );
   } finally {
     client.end();
