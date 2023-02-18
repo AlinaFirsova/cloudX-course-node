@@ -34,3 +34,11 @@ functions:
           method: get
           cors: true
           swaggerTags: ['product service']
+  createProduct:
+    handler: src/handlers/createProduct.main
+    events:
+      - http:
+          path: products
+          method: post
+          cors: true
+          swaggerTags: ['product service']
