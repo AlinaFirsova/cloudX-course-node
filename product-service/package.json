@@ -1,5 +1,5 @@
 {
-  "name": "cloudx-course-node",
+  "name": "cloudx-course-product-service",
   "version": "1.0.0",
   "scripts": {
     "deploy": "sls deploy",
