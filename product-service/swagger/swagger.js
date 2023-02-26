@@ -40,32 +40,7 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "name": "title",
-            "in": "body",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "description",
-            "in": "body",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "price",
-            "in": "body",
-            "required": true,
-            "type": "number"
-          },
-          {
-            "name": "count",
-            "in": "boby",
-            "required": true,
-            "type": "number"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "200 response"
