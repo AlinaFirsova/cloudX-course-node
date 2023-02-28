@@ -1,4 +1,4 @@
-service: cloudx-course-node
+service: cloudx-course-product-service
 frameworkVersion: '3'
 
 provider:
