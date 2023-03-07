@@ -16,6 +16,10 @@ provider:
             - s3:DeleteObject
             - s3:CopyObject
           Resource: arn:aws:s3:::epam-cloudx-course-import-service/*
+        - Effect: Allow
+          Action: 
+            - sqs:SendMessage
+          Resource: arn:aws:sqs:eu-west-1:267409235373:cloudx-course-product-service-queue
 
 plugins:
   - serverless-webpack
