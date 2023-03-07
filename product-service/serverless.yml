@@ -6,6 +6,43 @@ provider:
   runtime: nodejs16.x
   stage: dev
   region: eu-west-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 
+            - sns:Publish
+          Resource: 
+            Ref: SNSProductsTopic
+
+resources:
+  Resources:
+    SQSProductsQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: cloudx-course-product-service-queue
+    SNSProductsTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: cloudx-course-product-service-sns-topic
+    SNSProductsImportSubscription:
+      Type: AWS::SNS::Subscription
+      Properties: 
+        Endpoint: user@email.com
+        Protocol: email
+        TopicArn:
+          Ref: SNSProductsTopic
+    SNSProductsImportErrorSubscription:
+      Type: AWS::SNS::Subscription
+      Properties: 
+        Endpoint: user@email.com
+        Protocol: email
+        FilterPolicyScope: MessageBody
+        FilterPolicy:
+          errors:
+            - true
+        TopicArn:
+          Ref: SNSProductsTopic
 
 plugins:
   - serverless-auto-swagger
@@ -18,6 +55,15 @@ custom:
     title: 'Product Service'
 
 functions:
+  catalogBatchProcess:
+    handler: src/handlers/catalogBatchProcess.main
+    events:
+      - sqs:
+          batchSize: 5
+          arn:
+            Fn::GetAtt:
+              - SQSProductsQueue
+              - Arn
   getProductsList:
     handler: src/handlers/getProductsList.main
     events:

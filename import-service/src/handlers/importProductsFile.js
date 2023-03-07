@@ -1,5 +1,5 @@
 import { headers } from "../../constants";
-import { putObject } from "../../utils";
+import { putObject } from "../../S3ObjectCommands";
 
 export const main = async (event) => {
   try {
