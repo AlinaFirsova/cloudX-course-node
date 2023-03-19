@@ -1,6 +1,7 @@
 import csv from "csv-parser";
 
-import { getObject, copyObject, deleteObject } from "../../utils";
+import { getObject, copyObject, deleteObject } from "../../S3ObjectCommands";
+import { sendMessage } from "../../SQSCommands";
 
 export const main = async (event) => {
   try {
@@ -14,7 +15,9 @@ export const main = async (event) => {
       console.log(`Trying to parse object ${fileKey}...`);
 
       await new Promise((resolve, reject) => {
-        const onData = (data) => console.log("Record: ", data);
+        const onData = async (data) => {
+          await sendMessage(data);
+        };
         const onError = (error) => reject(error);
         const onEnd = () => { 
           console.log(`Object ${fileKey} was parsed successfully`); 

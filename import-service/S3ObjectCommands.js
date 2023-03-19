@@ -6,7 +6,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-import s3Client from "./s3Client";
+import s3Client from "./S3Client";
 
 const BUCKET_NAME = process.env.BUCKET_NAME;
 
