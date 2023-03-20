@@ -1,5 +1,5 @@
 service: cloudx-course-import-service
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 provider:
   name: aws
@@ -10,23 +10,36 @@ provider:
     role:
       statements:
         - Effect: Allow
-          Action: 
+          Action:
             - s3:PutObject
             - s3:GetObject
             - s3:DeleteObject
             - s3:CopyObject
           Resource: arn:aws:s3:::epam-cloudx-course-import-service/*
         - Effect: Allow
-          Action: 
+          Action:
             - sqs:SendMessage
           Resource: arn:aws:sqs:eu-west-1:267409235373:cloudx-course-product-service-queue
 
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: "ApiGatewayRestApi"
+
 plugins:
   - serverless-webpack
-  
+  - serverless-dotenv-plugin
+
 custom:
   webpack:
-    webpackConfig: 'webpack.config.js'
+    webpackConfig: "webpack.config.js"
 
 functions:
   importProductsFile:
@@ -36,6 +49,12 @@ functions:
           path: import
           method: get
           cors: true
+          authorizer:
+            name: basicAuthorizer
+            arn: arn:aws:lambda:eu-west-1:267409235373:function:cloudx-course-authorization-service-dev-basicAuthorizer
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
           request:
             parameters:
               querystrings:
@@ -49,4 +68,3 @@ functions:
           rules:
             - prefix: uploaded/
           existing: true
-
